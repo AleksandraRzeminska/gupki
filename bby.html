@@ -95,37 +95,47 @@
 </head>
 <body>
 
-    <div class="card">
-        <div class="heart">❤️</div>
-        <h1 id="question">Zostaniesz moją Walentynką?</h1>
-        <div class="buttons-container" id="btnWrapper">
+     <div class="card" id="mainCard">
+        <div style="font-size: 50px;">❤️</div>
+        <h1 id="headline">Zostaniesz moją Walentynką?</h1>
+        <div class="buttons-container">
             <button id="yesBtn" onclick="celebrate()">TAK!</button>
-            <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">NIE</button>
+            <button id="noBtn" onmouseover="action()" ontouchstart="action(event)">NIE</button>
         </div>
     </div>
 
     <script>
-        let yesSize = 18;
-        let paddingSize = 10;
+        let fontSize = 18;
+        let paddingV = 15;
+        let paddingH = 30;
 
-        function moveNoButton() {
-            const noBtn = document.getElementById('noBtn');
+        function action(event) {
+            // Jeśli to dotyk na telefonie, zapobiegamy domyślnemu kliknięciu
+            if(event) event.preventDefault();
+            
             const yesBtn = document.getElementById('yesBtn');
-            
-            // Powiększanie przycisku TAK
-            yesSize += 15; 
-            paddingSize += 5;
-            yesBtn.style.fontSize = yesSize + 'px';
-            yesBtn.style.padding = paddingSize + 'px ' + (paddingSize * 2) + 'px';
+            const noBtn = document.getElementById('noBtn');
 
-            // Przemieszczanie przycisku NIE w losowe miejsce w oknie
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            // 1. POWIĘKSZANIE przycisku TAK
+            fontSize += 12; // Rośnie o 12 pikseli za każdym razem
+            paddingV += 5;
+            paddingH += 8;
             
+            yesBtn.style.fontSize = fontSize + 'px';
+            yesBtn.style.padding = `${paddingV}px ${paddingH}px`;
+
+            // 2. UCIEKANIE przycisku NIE
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            
+            const randomX = Math.max(10, Math.random() * maxX);
+            const randomY = Math.max(10, Math.random() * maxY);
+
             noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         }
+
 
         function celebrate() {
             document.body.innerHTML = `
