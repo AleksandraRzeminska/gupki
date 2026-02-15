@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dla Mojego Walentynka ❤️</title>
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            touch-action: manipulation; /* Wyłącza zoom przy szybkim klikaniu */
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 { color: #ff4d6d; font-size: 1.8rem; }
+        
+        .buttons-container {
+            display: flex;
+            flex-direction: column; /* Na telefonie przyciski jeden pod drugim lub w kolumnie */
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            min-height: 150px;
+        }
+
+        #yesBtn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 20;
+        }
+
+        #noBtn {
+            background: #adb5bd;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            position: relative;
+            transition: 0.1s;
+        }
+
+        .cat-image {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+
+        /* Animacja serca */
+        .heart-main { color: #ff4d6d; font-size: 50px; animation: beat 1s infinite alternate; }
+        @keyframes beat { to { transform: scale(1.2); } }
+
+        /* Latające serduszka w tle */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.3);
+            font-size: 20px;
+            pointer-events: none;
+            animation: float 4s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(105vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <div class="heart-main">❤️</div>
+        <h1>Zostaniesz moją Walentynką?</h1>
+        <div class="buttons-container">
+            <button id="yesBtn" onclick="celebrate()">TAK!</button>
+            <button id="noBtn" onmouseover="moveNoButton()" ontouchstart="moveNoButton()">NIE</button>
+        </div>
+    </div>
+
+    <script>
+        let yesSize = 18;
+        let paddingSizeV = 12;
+        let paddingSizeH = 30;
+
+        function moveNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            // Powiększanie przycisku TAK
+            yesSize += 8; 
+            paddingSizeV += 4;
+            paddingSizeH += 6;
+            yesBtn.style.fontSize = yesSize + 'px';
+            yesBtn.style.padding = `${paddingSizeV}px ${paddingSizeH}px`;
+
+            // Losowa pozycja przycisku NIE (z marginesem 50px od krawędzi)
+            const padding = 60;
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding) + padding/2;
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding) + padding/2;
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function celebrate() {
+            document.getElementById('mainCard').innerHTML = `
+                <h1 style="font-size: 2rem;">Wiedziałam! ❤️</h1>
+                <img src="https://i.ibb.co/3kX0s2r/cute-cat.jpg" alt="Kotek" class="cat-image">
+                <p style="font-size: 1.2rem; color: #590d22;">Kocham Cię najmocniej!</p>
+                <div style="font-size: 50px;">🎉🥰👨‍❤️‍👨</div>
+            `;
+            // Eksplozja serduszek
+            setInterval(createHeart, 100);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
